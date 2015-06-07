@@ -15,10 +15,11 @@ public class Transforms {
 
     public static ExchangeTransform prettyPrintJsonResponseBody() {
         return exchange -> {
-            System.out.println("BOOM BICTHES: ");
             exchange.response.body = new GsonBuilder().setPrettyPrinting().create().toJson(new JsonParser().parse(exchange.response.body));
             return exchange;
         };
     }
+
+
 
 }
