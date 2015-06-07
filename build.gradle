@@ -1,9 +1,10 @@
 apply plugin: 'java'
 apply plugin: 'jacoco'
 apply plugin: 'com.github.kt3k.coveralls'
+apply plugin: 'maven-publish'
 
 sourceCompatibility = 1.8
-version = '1.0'
+version = '0.1.0'
 
 repositories {
     mavenCentral()
@@ -42,4 +43,22 @@ dependencies {
 
 task wrapper(type: Wrapper) {
     gradleVersion = '2.4'
+}
+
+task sourceJar(type: Jar) {
+    from sourceSets.main.allJava
+}
+
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            groupId 'com.nitorcreations'
+
+            from components.java
+
+            artifact sourceJar {
+                classifier "sources"
+            }
+        }
+    }
 }
