@@ -1,9 +1,7 @@
 package com.nitorcreations.puggly;
 
 import com.nitorcreations.puggly.domain.LoggedExchange;
-import com.nitorcreations.puggly.domain.tranforms.ConditionalTransform;
 import com.nitorcreations.puggly.domain.tranforms.ExchangeCondition;
-import com.nitorcreations.puggly.domain.tranforms.ExchangeTransform;
 
 import java.util.ArrayList;
 import java.util.List;
