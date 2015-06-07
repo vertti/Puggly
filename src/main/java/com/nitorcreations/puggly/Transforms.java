@@ -20,6 +20,18 @@ public class Transforms {
         };
     }
 
+    public static ExchangeTransform replaceResponseBody(String replacement) {
+        return exchange -> {
+            exchange.response.body = replacement;
+            return exchange;
+        };
+    }
 
+    public static ExchangeTransform replaceRequestBody(String replacement) {
+        return exchange -> {
+            exchange.request.body = replacement;
+            return exchange;
+        };
+    }
 
 }
