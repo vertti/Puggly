@@ -39,6 +39,7 @@ dependencies {
     testCompile 'org.apache.httpcomponents:httpclient:4.5'
     testCompile 'junit:junit:4.12'
     testCompile 'org.mockito:mockito-all:1.10.19'
+    testCompile 'nl.jqno.equalsverifier:equalsverifier:1.7.2'
 }
 
 task wrapper(type: Wrapper) {
