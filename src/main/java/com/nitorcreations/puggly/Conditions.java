@@ -13,4 +13,7 @@ public class Conditions {
         return exchange -> StringUtils.contains(exchange.response.contentType, mimeType);
     }
 
+    protected Conditions() {
+        // empty private constructor for util class
+    }
 }
