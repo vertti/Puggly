@@ -34,4 +34,7 @@ public class Transforms {
         };
     }
 
+    protected Transforms() {
+        // empty private constructor for util class
+    }
 }

@@ -8,7 +8,7 @@ import org.junit.Test;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
-public class TransformsTest {
+public class TransformsTest extends Transforms {
 
     @Test
     public void testPrettyPrintJsonRequestBody() throws Exception {
