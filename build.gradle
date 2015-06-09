@@ -65,46 +65,48 @@ artifacts {
     archives sourcesJar
 }
 
-signing {
-    sign configurations.archives
-}
+if (project.hasProperty('sonatypeUsername') && project.hasProperty('sonatypePassword')) {
+    signing {
+        sign configurations.archives
+    }
 
-uploadArchives {
-    repositories {
-        mavenDeployer {
-            beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
+    uploadArchives {
+        repositories {
+            mavenDeployer {
+                beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
 
-            repository(url: "https://oss.sonatype.org/service/local/staging/deploy/maven2/") {
-              authentication(userName: sonatypeUsername, password: sonatypePassword)
+                repository(url: "https://oss.sonatype.org/service/local/staging/deploy/maven2/") {
+                    authentication(userName: sonatypeUsername, password: sonatypePassword)
+                }
+
+                pom.project {
+                    name 'Puggly'
+                    packaging 'jar'
+                    description 'Pluggable Java-configured ServletFilter'
+                    url 'https://github.com/NitorCreations/Puggly'
+
+                    scm {
+                        url 'scm:git@github.com:NitorCreations/Puggly.git'
+                        connection 'scm:git@github.com:NitorCreations/Puggly.git'
+                        developerConnection 'scm:git@github.com:NitorCreations/Puggly.git'
+                    }
+
+                    licenses {
+                        license {
+                            name 'The Apache Software License, Version 2.0'
+                            url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+                            distribution 'repo'
+                        }
+                    }
+
+                    developers {
+                        developer {
+                            id 'vertti'
+                            name 'Janne Sinivirta'
+                        }
+                    }
+                }
             }
-
-            pom.project {
-               name 'Puggly'
-               packaging 'jar'
-               description 'Pluggable Java-configured ServletFilter'
-               url 'https://github.com/NitorCreations/Puggly'
-
-               scm {
-                   url 'scm:git@github.com:NitorCreations/Puggly.git'
-                   connection 'scm:git@github.com:NitorCreations/Puggly.git'
-                   developerConnection 'scm:git@github.com:NitorCreations/Puggly.git'
-               }
-
-               licenses {
-                   license {
-                       name 'The Apache Software License, Version 2.0'
-                       url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
-                       distribution 'repo'
-                   }
-               }
-
-               developers {
-                   developer {
-                       id 'vertti'
-                       name 'Janne Sinivirta'
-                   }
-               }
-           }
         }
     }
 }
