@@ -1,9 +1,11 @@
 apply plugin: 'java'
 apply plugin: 'jacoco'
 apply plugin: 'com.github.kt3k.coveralls'
-apply plugin: 'maven-publish'
+apply plugin: 'maven'
+apply plugin: 'signing'
 
 sourceCompatibility = 1.8
+group = 'com.nitorcreations'
 version = '0.1.0'
 
 repositories {
@@ -46,20 +48,63 @@ task wrapper(type: Wrapper) {
     gradleVersion = '2.4'
 }
 
-task sourceJar(type: Jar) {
-    from sourceSets.main.allJava
+task javadocJar(type: Jar, dependsOn: javadoc) {
+    classifier = 'javadoc'
+    from tasks.javadoc.destinationDir
 }
 
-publishing {
-    publications {
-        mavenJava(MavenPublication) {
-            groupId 'com.nitorcreations'
+task sourcesJar(type: Jar) {
+    from sourceSets.main.allSource
+    classifier = 'sources'
+}
 
-            from components.java
+artifacts {
+    archives jar
 
-            artifact sourceJar {
-                classifier "sources"
+    archives javadocJar
+    archives sourcesJar
+}
+
+signing {
+    sign configurations.archives
+}
+
+uploadArchives {
+    repositories {
+        mavenDeployer {
+            beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
+
+            repository(url: "https://oss.sonatype.org/service/local/staging/deploy/maven2/") {
+              authentication(userName: sonatypeUsername, password: sonatypePassword)
             }
+
+            pom.project {
+               name 'Puggly'
+               packaging 'jar'
+               description 'Pluggable Java-configured ServletFilter'
+               url 'https://github.com/NitorCreations/Puggly'
+
+               scm {
+                   url 'scm:git@github.com:NitorCreations/Puggly.git'
+                   connection 'scm:git@github.com:NitorCreations/Puggly.git'
+                   developerConnection 'scm:git@github.com:NitorCreations/Puggly.git'
+               }
+
+               licenses {
+                   license {
+                       name 'The Apache Software License, Version 2.0'
+                       url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+                       distribution 'repo'
+                   }
+               }
+
+               developers {
+                   developer {
+                       id 'vertti'
+                       name 'Janne Sinivirta'
+                   }
+               }
+           }
         }
     }
 }
