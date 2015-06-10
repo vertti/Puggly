@@ -3,6 +3,7 @@ apply plugin: 'jacoco'
 apply plugin: 'com.github.kt3k.coveralls'
 apply plugin: 'maven'
 apply plugin: 'signing'
+apply plugin: 'com.github.ben-manes.versions'
 
 sourceCompatibility = 1.8
 group = 'com.nitorcreations'
@@ -15,10 +16,12 @@ repositories {
 buildscript {
     repositories {
         mavenCentral()
+        jcenter()
     }
 
     dependencies {
         classpath 'org.kt3k.gradle.plugin:coveralls-gradle-plugin:2.0.1'
+        classpath 'com.github.ben-manes:gradle-versions-plugin:0.10.1'
     }
 }
 
