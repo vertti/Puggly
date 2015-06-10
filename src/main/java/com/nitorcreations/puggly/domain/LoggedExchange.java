@@ -6,7 +6,7 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 import java.util.concurrent.atomic.AtomicLong;
 
 public class LoggedExchange extends PugglyValue {
-    private final AtomicLong counter = new AtomicLong(1);
+    private static final AtomicLong counter = new AtomicLong(1);
 
     public final long id;
 

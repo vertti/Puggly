@@ -4,6 +4,7 @@ import nl.jqno.equalsverifier.EqualsVerifier;
 import nl.jqno.equalsverifier.Warning;
 import org.junit.Test;
 
+import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
@@ -17,6 +18,6 @@ public class LoggedExchangeTest {
     @Test
     public void to_string() {
         LoggedExchange exchange = new LoggedExchange(new LoggedRequest(), new LoggedResponse());
-        assertThat(exchange.toString(), is("id=1, request=[uri=<null>, contentType=<null>, sessionId=<null>, body=<null>], response[contentType=<null>, body=<null>]"));
+        assertThat(exchange.toString(), containsString("request=[uri=<null>, contentType=<null>, sessionId=<null>, body=<null>], response[contentType=<null>, body=<null>]"));
     }
 }
