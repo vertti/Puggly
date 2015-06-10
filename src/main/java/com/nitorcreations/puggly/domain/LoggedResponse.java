@@ -1,8 +1,5 @@
 package com.nitorcreations.puggly.domain;
 
-import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.apache.commons.lang3.builder.ToStringStyle;
-
 import javax.servlet.http.HttpServletResponse;
 
 public class LoggedResponse extends PugglyValue {
@@ -19,9 +16,8 @@ public class LoggedResponse extends PugglyValue {
 
     @Override
     public String toString() {
-        return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)
-                .append("contentType", contentType)
-                .append("body", body)
-                .toString();
+        return "[contentType=" + (contentType == null ? "<null>" : contentType) +
+                ", body=" + (body == null ? "<null>" : body)
+                + "]";
     }
 }

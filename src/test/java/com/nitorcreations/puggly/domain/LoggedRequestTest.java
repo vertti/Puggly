@@ -39,7 +39,7 @@ public class LoggedRequestTest {
         loggedRequest.sessionId = "123";
         loggedRequest.body = "body";
 
-        assertThat(loggedRequest.toString(), is("LoggedRequest[uri=http://foobar.com,contentType=text/html,sessionId=123,body=body]"));
+        assertThat(loggedRequest.toString(), is("[uri=http://foobar.com, contentType=text/html, sessionId=123, body=body]"));
     }
 
     @Test
@@ -48,7 +48,7 @@ public class LoggedRequestTest {
         loggedRequest.uri = "http://foobar.com";
         loggedRequest.contentType = "text/html";
 
-        assertThat(loggedRequest.toString(), is("LoggedRequest[uri=http://foobar.com,contentType=text/html,sessionId=<null>,body=<null>]"));
+        assertThat(loggedRequest.toString(), is("[uri=http://foobar.com, contentType=text/html, sessionId=<null>, body=<null>]"));
     }
 
 }

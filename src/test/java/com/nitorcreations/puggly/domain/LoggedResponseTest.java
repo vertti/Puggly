@@ -13,7 +13,7 @@ public class LoggedResponseTest {
         loggedResponse.body = "body";
         loggedResponse.contentType = "foo/bar";
 
-        assertThat(loggedResponse.toString(), is("LoggedResponse[contentType=foo/bar,body=body]"));
+        assertThat(loggedResponse.toString(), is("[contentType=foo/bar, body=body]"));
     }
 
 }

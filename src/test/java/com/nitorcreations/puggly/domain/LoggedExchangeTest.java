@@ -17,6 +17,6 @@ public class LoggedExchangeTest {
     @Test
     public void to_string() {
         LoggedExchange exchange = new LoggedExchange(new LoggedRequest(), new LoggedResponse());
-        assertThat(exchange.toString(), is("LoggedExchange[id=1,request=LoggedRequest[uri=<null>,contentType=<null>,sessionId=<null>,body=<null>],response=LoggedResponse[contentType=<null>,body=<null>]]"));
+        assertThat(exchange.toString(), is("id=1, request=[uri=<null>, contentType=<null>, sessionId=<null>, body=<null>], response[contentType=<null>, body=<null>]"));
     }
 }

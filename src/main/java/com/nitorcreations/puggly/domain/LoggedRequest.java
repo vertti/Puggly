@@ -1,8 +1,5 @@
 package com.nitorcreations.puggly.domain;
 
-import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.apache.commons.lang3.builder.ToStringStyle;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
@@ -27,11 +24,10 @@ public class LoggedRequest extends PugglyValue {
 
     @Override
     public String toString() {
-        return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)
-                .append("uri", uri)
-                .append("contentType", contentType)
-                .append("sessionId", sessionId)
-                .append("body", body)
-                .toString();
+        return "[uri=" + (uri == null ? "<null>" : uri) +
+                ", contentType=" + (contentType == null ? "<null>" : contentType) +
+                ", sessionId=" + (sessionId == null ? "<null>" : sessionId) +
+                ", body=" + (body == null ? "<null>" : body) +
+                "]";
     }
 }
