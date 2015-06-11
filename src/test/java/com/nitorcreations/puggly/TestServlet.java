@@ -18,6 +18,7 @@ public class TestServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        System.out.println("BITHCESSSS!!");
         if ("application/json".equals(request.getHeader("accept"))) {
             response.setContentType("application/json");
             response.setStatus(HttpServletResponse.SC_OK);
@@ -31,6 +32,7 @@ public class TestServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        System.out.println("REQU: " + req.getReader().readLine());
         doGet(req, resp);
     }
 }

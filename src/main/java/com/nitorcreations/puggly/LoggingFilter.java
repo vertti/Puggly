@@ -3,12 +3,12 @@ package com.nitorcreations.puggly;
 import com.nitorcreations.puggly.domain.LoggedExchange;
 import com.nitorcreations.puggly.domain.LoggedRequest;
 import com.nitorcreations.puggly.domain.LoggedResponse;
-import com.nitorcreations.puggly.domain.tranforms.ConditionalTransform;
 import com.nitorcreations.puggly.domain.tranforms.ExchangeCondition;
 import com.nitorcreations.puggly.domain.tranforms.ExchangeTransform;
-import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.web.util.ContentCachingRequestWrapper;
+import org.springframework.web.util.ContentCachingResponseWrapper;
 
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
@@ -31,20 +31,17 @@ public class LoggingFilter implements Filter {
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws ServletException, IOException {
         if (request instanceof HttpServletRequest) {
             if (response.getCharacterEncoding() == null) {
-                response.setCharacterEncoding("UTF-8"); // Or whatever default. UTF-8 is good for World Domination.
+                response.setCharacterEncoding("UTF-8");
             }
 
-            ResettableStreamHttpServletRequest resettableRequest = new ResettableStreamHttpServletRequest((HttpServletRequest) request);
-            HttpServletResponseCopier responseCopier = new HttpServletResponseCopier((HttpServletResponse) response);
-
-            LoggedRequest loggedRequest = new LoggedRequest((HttpServletRequest) request, IOUtils.toString(resettableRequest.getReader()));
-            resettableRequest.resetInputStream();
+            ContentCachingRequestWrapper requestWrapper = new ContentCachingRequestWrapper((HttpServletRequest) request);
+            ContentCachingResponseWrapper responseWrapper = new ContentCachingResponseWrapper((HttpServletResponse) response);
 
             try {
-                chain.doFilter(resettableRequest, responseCopier);
-                responseCopier.flushBuffer();
+                chain.doFilter(requestWrapper, responseWrapper);
             } finally {
-                LoggedResponse loggedResponse = new LoggedResponse(responseCopier, new String(responseCopier.getCopy(), response.getCharacterEncoding()));
+                LoggedRequest loggedRequest = new LoggedRequest(requestWrapper, new String(requestWrapper.getContentAsByteArray(), requestWrapper.getCharacterEncoding()));
+                LoggedResponse loggedResponse = new LoggedResponse(responseWrapper, new String(responseWrapper.getContentAsByteArray(), responseWrapper.getCharacterEncoding()));
                 LoggedExchange loggedExchange = new LoggedExchange(loggedRequest, loggedResponse);
 
                 if (!skipper.test(loggedExchange)) {
@@ -68,6 +65,5 @@ public class LoggingFilter implements Filter {
     public void registerTransform(ExchangeCondition condition, ExchangeTransform transform) {
         transformer.registerTransform(condition, transform);
     }
-
 
 }
