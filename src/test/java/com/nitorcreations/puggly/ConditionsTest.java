@@ -38,4 +38,11 @@ public class ConditionsTest extends Conditions {
         assertThat(Conditions.hasResponseContentType("match").test(exchange), is(false));
     }
 
+    @Test
+    public void uri_contains() {
+        LoggedExchange exchange = new LoggedExchange(new LoggedRequest(), new LoggedResponse());
+        exchange.request.uri = "/foo/bar/baz";
+        assertThat(Conditions.uriContains("/bar/").test(exchange), is(true));
+    }
+
 }

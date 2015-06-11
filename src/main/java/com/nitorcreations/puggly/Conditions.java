@@ -13,6 +13,10 @@ public class Conditions {
         return exchange -> StringUtils.contains(exchange.response.contentType, mimeType);
     }
 
+    public static ExchangeCondition uriContains(String uripart) {
+        return exchange -> StringUtils.contains(exchange.request.uri, uripart);
+    }
+
     protected Conditions() {
         // empty private constructor for util class
     }
