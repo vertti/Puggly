@@ -1,5 +1,7 @@
 package com.nitorcreations.puggly.domain;
 
+import nl.jqno.equalsverifier.EqualsVerifier;
+import nl.jqno.equalsverifier.Warning;
 import org.junit.Test;
 
 import javax.servlet.http.HttpServletRequest;
@@ -49,6 +51,11 @@ public class LoggedRequestTest {
         loggedRequest.contentType = "text/html";
 
         assertThat(loggedRequest.toString(), is("[uri=http://foobar.com, contentType=text/html, sessionId=<null>, body=<null>]"));
+    }
+
+    @Test
+    public void equalsContract() {
+        EqualsVerifier.forClass(LoggedExchange.class).withRedefinedSuperclass().suppress(Warning.STRICT_INHERITANCE).suppress(Warning.NONFINAL_FIELDS).verify();
     }
 
 }

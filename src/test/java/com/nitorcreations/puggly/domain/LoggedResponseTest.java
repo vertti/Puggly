@@ -1,5 +1,7 @@
 package com.nitorcreations.puggly.domain;
 
+import nl.jqno.equalsverifier.EqualsVerifier;
+import nl.jqno.equalsverifier.Warning;
 import org.junit.Test;
 
 import static org.hamcrest.CoreMatchers.is;
@@ -12,8 +14,15 @@ public class LoggedResponseTest {
         LoggedResponse loggedResponse = new LoggedResponse();
         loggedResponse.body = "body";
         loggedResponse.contentType = "foo/bar";
+        loggedResponse.status = 200;
 
-        assertThat(loggedResponse.toString(), is("[contentType=foo/bar, body=body]"));
+        assertThat(loggedResponse.toString(), is("[status=200, contentType=foo/bar, body=body]"));
     }
+
+    @Test
+    public void equalsContract() {
+        EqualsVerifier.forClass(LoggedExchange.class).withRedefinedSuperclass().suppress(Warning.STRICT_INHERITANCE).suppress(Warning.NONFINAL_FIELDS).verify();
+    }
+
 
 }
