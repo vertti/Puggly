@@ -17,6 +17,10 @@ public class Conditions {
         return exchange -> StringUtils.contains(exchange.request.uri, uripart);
     }
 
+    public static ExchangeCondition responseStatusOk() {
+        return exchange -> exchange.response.status >= 200 && exchange.response.status < 300;
+    }
+
     protected Conditions() {
         // empty private constructor for util class
     }

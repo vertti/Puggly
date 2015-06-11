@@ -45,4 +45,18 @@ public class ConditionsTest extends Conditions {
         assertThat(Conditions.uriContains("/bar/").test(exchange), is(true));
     }
 
+    @Test
+    public void status_ok_matcher_works() {
+        assertThat(Conditions.responseStatusOk().test(getExchangeWithStatus(200)), is(true));
+        assertThat(Conditions.responseStatusOk().test(getExchangeWithStatus(201)), is(true));
+        assertThat(Conditions.responseStatusOk().test(getExchangeWithStatus(300)), is(false));
+        assertThat(Conditions.responseStatusOk().test(getExchangeWithStatus(199)), is(false));
+    }
+
+    private LoggedExchange getExchangeWithStatus(int status) {
+        LoggedExchange exchange = new LoggedExchange(new LoggedRequest(), new LoggedResponse());
+        exchange.response.status = status;
+        return exchange;
+    }
+
 }
