@@ -6,7 +6,7 @@ import com.nitorcreations.puggly.domain.tranforms.ExchangeCondition;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ChainedExchangeSkipper implements ExchangeCondition {
+class ChainedExchangeSkipper implements ExchangeCondition {
 
     private List<ExchangeCondition> transforms = new ArrayList<>();
 

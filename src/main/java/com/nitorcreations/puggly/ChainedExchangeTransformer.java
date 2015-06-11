@@ -8,7 +8,7 @@ import com.nitorcreations.puggly.domain.tranforms.ExchangeTransform;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ChainedExchangeTransformer implements ExchangeTransform {
+class ChainedExchangeTransformer implements ExchangeTransform {
 
     private List<ConditionalTransform> transforms = new ArrayList<>();
 

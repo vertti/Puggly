@@ -3,6 +3,9 @@ package com.nitorcreations.puggly;
 import com.nitorcreations.puggly.domain.LoggedExchange;
 import com.nitorcreations.puggly.domain.LoggedRequest;
 import com.nitorcreations.puggly.domain.LoggedResponse;
+import com.nitorcreations.puggly.domain.tranforms.ConditionalTransform;
+import com.nitorcreations.puggly.domain.tranforms.ExchangeCondition;
+import com.nitorcreations.puggly.domain.tranforms.ExchangeTransform;
 import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -58,12 +61,13 @@ public class LoggingFilter implements Filter {
         // NOOP.
     }
 
-
-    public void setTransformer(ChainedExchangeTransformer transformer) {
-        this.transformer = transformer;
+    public void registerSkipCondition(ExchangeCondition condition) {
+        skipper.registerSkipCondition(condition);
     }
 
-    public void setSkipper(ChainedExchangeSkipper skipper) {
-        this.skipper = skipper;
+    public void registerTransform(ExchangeCondition condition, ExchangeTransform transform) {
+        transformer.registerTransform(condition, transform);
     }
+
+
 }

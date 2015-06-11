@@ -46,13 +46,8 @@ public class LoggingFilterTest {
     public void setup() throws Exception {
         httpclient = HttpClients.createDefault();
 
-        ChainedExchangeTransformer chain = new ChainedExchangeTransformer();
-        chain.registerTransform(Conditions.hasResponseContentType("application/json"), Transforms.prettyPrintJsonResponseBody());
-        ChainedExchangeSkipper skipper = new ChainedExchangeSkipper();
-        skipper.registerSkipCondition(Conditions.hasRequestContentType("foobar/yeah"));
-
-        filterToTest.setTransformer(chain);
-        filterToTest.setSkipper(skipper);
+        filterToTest.registerTransform(Conditions.hasResponseContentType("application/json"), Transforms.prettyPrintJsonResponseBody());
+        filterToTest.registerSkipCondition(Conditions.hasRequestContentType("foobar/yeah"));
 
         jetty = new FilterTestingServer();
         jetty.start(filterToTest);
