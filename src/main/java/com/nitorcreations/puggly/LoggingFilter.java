@@ -7,6 +7,7 @@ import com.nitorcreations.puggly.domain.tranforms.ExchangeCondition;
 import com.nitorcreations.puggly.domain.tranforms.ExchangeTransform;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.util.StreamUtils;
 import org.springframework.web.util.ContentCachingRequestWrapper;
 import org.springframework.web.util.ContentCachingResponseWrapper;
 
@@ -40,9 +41,18 @@ public class LoggingFilter implements Filter {
             try {
                 chain.doFilter(requestWrapper, responseWrapper);
             } finally {
+                final byte[] body = responseWrapper.getContentAsByteArray();
+
                 LoggedRequest loggedRequest = new LoggedRequest(requestWrapper, new String(requestWrapper.getContentAsByteArray(), requestWrapper.getCharacterEncoding()));
-                LoggedResponse loggedResponse = new LoggedResponse(responseWrapper, new String(responseWrapper.getContentAsByteArray(), responseWrapper.getCharacterEncoding()));
+                LoggedResponse loggedResponse = new LoggedResponse(responseWrapper, new String(body, responseWrapper.getCharacterEncoding()));
                 LoggedExchange loggedExchange = new LoggedExchange(loggedRequest, loggedResponse);
+
+                HttpServletResponse rawResponse = (HttpServletResponse) responseWrapper.getResponse();
+
+                if (body.length > 0) {
+                    rawResponse.setContentLength(body.length);
+                    StreamUtils.copy(body, rawResponse.getOutputStream());
+                }
 
                 if (!skipper.test(loggedExchange)) {
                     logger.debug("{}", transformer.apply(loggedExchange));

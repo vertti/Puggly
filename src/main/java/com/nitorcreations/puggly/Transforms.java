@@ -8,7 +8,7 @@ import com.nitorcreations.puggly.domain.tranforms.ExchangeTransform;
 public class Transforms {
 
     private static final Gson gson = new GsonBuilder().setPrettyPrinting().create();
-    
+
     public static ExchangeTransform prettyPrintJsonRequestBody() {
         return exchange -> {
             exchange.request.body = gson.toJson(new JsonParser().parse(exchange.request.body));

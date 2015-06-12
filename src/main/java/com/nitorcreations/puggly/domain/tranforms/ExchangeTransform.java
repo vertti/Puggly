@@ -4,4 +4,5 @@ import com.nitorcreations.puggly.domain.LoggedExchange;
 
 import java.util.function.UnaryOperator;
 
-public interface ExchangeTransform extends UnaryOperator<LoggedExchange> {}
+public interface ExchangeTransform extends UnaryOperator<LoggedExchange> {
+}
