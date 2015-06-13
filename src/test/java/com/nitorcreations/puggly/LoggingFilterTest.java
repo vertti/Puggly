@@ -77,7 +77,7 @@ public class LoggingFilterTest {
 
         httpclient.execute(httpget);
 
-        verify(logger).debug(eq("{}"), any(LoggedExchange.class));
+        verify(logger, timeout(1000).times(1)).debug(eq("{}"), any(LoggedExchange.class));
     }
 
     @Test
@@ -87,7 +87,7 @@ public class LoggingFilterTest {
         CloseableHttpResponse response = httpclient.execute(httpPut);
         assertThat(response.getStatusLine().getStatusCode(), is(HttpStatus.SC_NO_CONTENT));
 
-        verify(logger).debug(eq("{}"), any(LoggedExchange.class));
+        verify(logger, timeout(1000).times(1)).debug(eq("{}"), any(LoggedExchange.class));
     }
 
     @Test
@@ -110,7 +110,7 @@ public class LoggingFilterTest {
         final CloseableHttpResponse response = httpclient.execute(httpPost);
 
         assertThat(StreamUtils.copyToString(response.getEntity().getContent(), StandardCharsets.UTF_8), is("response to post"));
-        verify(logger).debug(eq("{}"), any(LoggedExchange.class));
+        verify(logger, timeout(1000).times(1)).debug(eq("{}"), any(LoggedExchange.class));
     }
 
     @After
