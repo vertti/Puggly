@@ -3,6 +3,8 @@ package com.nitorcreations.puggly.domain;
 import nl.jqno.equalsverifier.EqualsVerifier;
 import nl.jqno.equalsverifier.Warning;
 import org.junit.Test;
+import org.springframework.mock.web.MockHttpServletRequest;
+import org.springframework.mock.web.MockHttpSession;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -31,6 +33,35 @@ public class LoggedRequestTest {
         LoggedRequest loggedRequest = new LoggedRequest(request, "");
 
         assertThat(loggedRequest.uri, is("http://foobar.com"));
+    }
+
+    @Test
+    public void session_id_from_httpservletrequest() {
+        MockHttpServletRequest servletRequest = new MockHttpServletRequest();
+        MockHttpSession session = new MockHttpSession(null, "123");
+        servletRequest.setSession(session);
+        LoggedRequest loggedRequest = new LoggedRequest(servletRequest, "body content");
+
+        assertThat(loggedRequest.sessionId, is("123"));
+    }
+
+    @Test
+    public void contentType_from_httpservletrequest() {
+        MockHttpServletRequest servletRequest = new MockHttpServletRequest();
+        servletRequest.setContentType("foo/bar");
+        LoggedRequest loggedRequest = new LoggedRequest(servletRequest, "body content");
+
+        assertThat(loggedRequest.contentType, is("foo/bar"));
+    }
+
+    @Test
+    public void uri_from_httpservletrequest() {
+        MockHttpServletRequest servletRequest = new MockHttpServletRequest();
+        servletRequest.setRequestURI("foo/bar");
+        servletRequest.setQueryString("baz=qux");
+        LoggedRequest loggedRequest = new LoggedRequest(servletRequest, "body content");
+
+        assertThat(loggedRequest.uri, is("foo/bar?baz=qux"));
     }
 
     @Test
