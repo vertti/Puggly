@@ -35,4 +35,9 @@ public class TestServlet extends HttpServlet {
         response.setStatus(HttpServletResponse.SC_OK);
         response.getWriter().println("response to post");
     }
+
+    @Override
+    protected void doPut(HttpServletRequest req, HttpServletResponse response) throws ServletException, IOException {
+        response.setStatus(HttpServletResponse.SC_NO_CONTENT);
+    }
 }

@@ -1,11 +1,13 @@
 package com.nitorcreations.puggly;
 
 import com.nitorcreations.puggly.domain.LoggedExchange;
+import org.apache.http.HttpStatus;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
+import org.apache.http.client.methods.HttpPut;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.message.BasicNameValuePair;
@@ -74,6 +76,16 @@ public class LoggingFilterTest {
         HttpGet httpget = new HttpGet("http://localhost:8080/foobar");
 
         httpclient.execute(httpget);
+
+        verify(logger).debug(eq("{}"), any(LoggedExchange.class));
+    }
+
+    @Test
+    public void testPut_no_content() throws IOException {
+        HttpPut httpPut = new HttpPut("http://localhost:8080/foobar");
+
+        CloseableHttpResponse response = httpclient.execute(httpPut);
+        assertThat(response.getStatusLine().getStatusCode(), is(HttpStatus.SC_NO_CONTENT));
 
         verify(logger).debug(eq("{}"), any(LoggedExchange.class));
     }
