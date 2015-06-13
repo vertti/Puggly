@@ -8,15 +8,17 @@ import com.nitorcreations.puggly.domain.tranforms.ExchangeTransform;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.StreamUtils;
+import org.springframework.web.filter.OncePerRequestFilter;
 import org.springframework.web.util.ContentCachingRequestWrapper;
 import org.springframework.web.util.ContentCachingResponseWrapper;
 
-import javax.servlet.*;
+import javax.servlet.FilterChain;
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-public class LoggingFilter implements Filter {
+public class LoggingFilter extends OncePerRequestFilter {
 
     private Logger logger = LoggerFactory.getLogger(LoggingFilter.class);
 
@@ -24,48 +26,30 @@ public class LoggingFilter implements Filter {
     private ChainedExchangeSkipper skipper = new ChainedExchangeSkipper();
 
     @Override
-    public void init(FilterConfig config) throws ServletException {
-        // NOOP.
-    }
+    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws ServletException, IOException {
+        ContentCachingRequestWrapper requestWrapper = new ContentCachingRequestWrapper(request);
+        ContentCachingResponseWrapper responseWrapper = new ContentCachingResponseWrapper(response);
 
-    @Override
-    public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws ServletException, IOException {
-        if (request instanceof HttpServletRequest) {
-            if (response.getCharacterEncoding() == null) {
-                response.setCharacterEncoding("UTF-8");
+        try {
+            chain.doFilter(requestWrapper, responseWrapper);
+        } finally {
+            final byte[] body = responseWrapper.getContentAsByteArray();
+
+            LoggedRequest loggedRequest = new LoggedRequest(requestWrapper, new String(requestWrapper.getContentAsByteArray(), requestWrapper.getCharacterEncoding()));
+            LoggedResponse loggedResponse = new LoggedResponse(responseWrapper, new String(body, responseWrapper.getCharacterEncoding()));
+            LoggedExchange loggedExchange = new LoggedExchange(loggedRequest, loggedResponse);
+
+            HttpServletResponse rawResponse = (HttpServletResponse) responseWrapper.getResponse();
+
+            if (body.length > 0) {
+                rawResponse.setContentLength(body.length);
+                StreamUtils.copy(body, rawResponse.getOutputStream());
             }
 
-            ContentCachingRequestWrapper requestWrapper = new ContentCachingRequestWrapper((HttpServletRequest) request);
-            ContentCachingResponseWrapper responseWrapper = new ContentCachingResponseWrapper((HttpServletResponse) response);
-
-            try {
-                chain.doFilter(requestWrapper, responseWrapper);
-            } finally {
-                final byte[] body = responseWrapper.getContentAsByteArray();
-
-                LoggedRequest loggedRequest = new LoggedRequest(requestWrapper, new String(requestWrapper.getContentAsByteArray(), requestWrapper.getCharacterEncoding()));
-                LoggedResponse loggedResponse = new LoggedResponse(responseWrapper, new String(body, responseWrapper.getCharacterEncoding()));
-                LoggedExchange loggedExchange = new LoggedExchange(loggedRequest, loggedResponse);
-
-                HttpServletResponse rawResponse = (HttpServletResponse) responseWrapper.getResponse();
-
-                if (body.length > 0) {
-                    rawResponse.setContentLength(body.length);
-                    StreamUtils.copy(body, rawResponse.getOutputStream());
-                }
-
-                if (!skipper.test(loggedExchange)) {
-                    logger.debug("{}", transformer.apply(loggedExchange));
-                }
+            if (!skipper.test(loggedExchange)) {
+                logger.debug("{}", transformer.apply(loggedExchange));
             }
-        } else {
-            chain.doFilter(request, response);
         }
-    }
-
-    @Override
-    public void destroy() {
-        // NOOP.
     }
 
     public void registerSkipCondition(ExchangeCondition condition) {
