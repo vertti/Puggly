@@ -35,9 +35,6 @@ public class LoggingFilter extends OncePerRequestFilter {
         } finally {
             final byte[] body = responseWrapper.getContentAsByteArray();
 
-            LoggedRequest loggedRequest = new LoggedRequest(requestWrapper, new String(requestWrapper.getContentAsByteArray(), requestWrapper.getCharacterEncoding()));
-            LoggedResponse loggedResponse = new LoggedResponse(responseWrapper, new String(body, responseWrapper.getCharacterEncoding()));
-            LoggedExchange loggedExchange = new LoggedExchange(loggedRequest, loggedResponse);
 
             HttpServletResponse rawResponse = (HttpServletResponse) responseWrapper.getResponse();
 
@@ -45,6 +42,10 @@ public class LoggingFilter extends OncePerRequestFilter {
                 rawResponse.setContentLength(body.length);
                 StreamUtils.copy(body, rawResponse.getOutputStream());
             }
+
+            LoggedRequest loggedRequest = new LoggedRequest(requestWrapper, new String(requestWrapper.getContentAsByteArray(), requestWrapper.getCharacterEncoding()));
+            LoggedResponse loggedResponse = new LoggedResponse(responseWrapper, new String(body, responseWrapper.getCharacterEncoding()));
+            LoggedExchange loggedExchange = new LoggedExchange(loggedRequest, loggedResponse);
 
             if (!skipper.test(loggedExchange)) {
                 logger.debug("{}", transformer.apply(loggedExchange));
