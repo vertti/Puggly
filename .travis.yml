@@ -3,6 +3,12 @@ language: java
 jdk:
 - oraclejdk8
 
+env:
+  global:
+   # The next declaration is the encrypted COVERITY_SCAN_TOKEN, created
+   #   via the "travis encrypt" command using the project repo's public key
+   - secure: "cjfyixxJPEZQSs1xReJH0A97F3RDNAIGCrUhb+DlqaguDXBIpPKCHhWFxCMBAyYPouQA3WSqHfyks5wiMqoSD74H+kdqGThN2gjd60rubzm6s6WOVe+52nOqV3zGRjFRdif8AuyM3gUtIvwg6RmZqUj7kJBFMy+NjOkx3fdVi4mWuWb8Tt0iZDsMlTfV+zZhLEcQgnRYzrwGslhBSFPT1jQh941fhgxZSyPFxthyzSDUcK8Ss1Qd3+YQuSuk404yB9JeQjMVrjYH76yo1Nds+SksUJjaVFCAgNWoBfjDFo96nO4Akxg4TmcbtyxT5o4Oep9MMe70lC8tHedn7kniXk+rdiQs//CqKu/ruj8Ml3K5+IeVUwJZEpoTyhQkqIRDrIwixE/n9Up/1atVtvC8aH+wyZ12319Hi2YJz1ozmFLRv5plMWLpG5Pv8W9XCYTxm704+fqqXzSoZjlbeREB1NvFJz+Fhu2qQdk9ga+PRT8VE3g1TNrMIP1Ujprbj5H6DoxegZTPT7dqCrDUi7P2o/AUsEro4AFyaEH/PnqeXcnZA0ak8wy0dWhhXT7ix4kqljUcAZjalfhsWW1FG042C8RnckA5dhR6Si2tUYsMwANLOzKVx/zItza+zkeQvQYE1MujWDB/pbtcUIfr8udkXTibtm4SHsKWPQ+vDd6CBTY="
+
 addons:
   apt:
     packages:
@@ -14,14 +20,8 @@ addons:
     notification_email: janne.sinivirta@gmail.com
     build_command_prepend: "./gradlew clean"
     build_command:   "./gradlew assemble"
-    branch_pattern: coverity_scan
+    branch_pattern: master
 
 after_success:
 - ./gradlew jacocoTestReport coveralls
 - bash <(curl -s https://codecov.io/bash)
-
-env:
-  global:
-   # The next declaration is the encrypted COVERITY_SCAN_TOKEN, created
-   #   via the "travis encrypt" command using the project repo's public key
-   - secure: "cjfyixxJPEZQSs1xReJH0A97F3RDNAIGCrUhb+DlqaguDXBIpPKCHhWFxCMBAyYPouQA3WSqHfyks5wiMqoSD74H+kdqGThN2gjd60rubzm6s6WOVe+52nOqV3zGRjFRdif8AuyM3gUtIvwg6RmZqUj7kJBFMy+NjOkx3fdVi4mWuWb8Tt0iZDsMlTfV+zZhLEcQgnRYzrwGslhBSFPT1jQh941fhgxZSyPFxthyzSDUcK8Ss1Qd3+YQuSuk404yB9JeQjMVrjYH76yo1Nds+SksUJjaVFCAgNWoBfjDFo96nO4Akxg4TmcbtyxT5o4Oep9MMe70lC8tHedn7kniXk+rdiQs//CqKu/ruj8Ml3K5+IeVUwJZEpoTyhQkqIRDrIwixE/n9Up/1atVtvC8aH+wyZ12319Hi2YJz1ozmFLRv5plMWLpG5Pv8W9XCYTxm704+fqqXzSoZjlbeREB1NvFJz+Fhu2qQdk9ga+PRT8VE3g1TNrMIP1Ujprbj5H6DoxegZTPT7dqCrDUi7P2o/AUsEro4AFyaEH/PnqeXcnZA0ak8wy0dWhhXT7ix4kqljUcAZjalfhsWW1FG042C8RnckA5dhR6Si2tUYsMwANLOzKVx/zItza+zkeQvQYE1MujWDB/pbtcUIfr8udkXTibtm4SHsKWPQ+vDd6CBTY="
