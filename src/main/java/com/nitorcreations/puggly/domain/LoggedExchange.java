@@ -31,9 +31,8 @@ public class LoggedExchange extends PugglyValue {
 
     @Override
     public String toString() {
-        return "id=" + id +
-                ", request=" + request +
-                ", response" + response +
+        return ",\nRequest (" + id + "): " + request +
+                ",\nResponse (" + id + "): " + response +
                 "";
     }
 }

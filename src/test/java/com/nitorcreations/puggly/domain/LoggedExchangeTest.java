@@ -16,7 +16,12 @@ public class LoggedExchangeTest {
 
     @Test
     public void to_string() {
-        LoggedExchange exchange = new LoggedExchange(new LoggedRequest(), new LoggedResponse());
-        assertThat(exchange.toString(), containsString("request=[uri=<null>, contentType=<null>, sessionId=<null>, body=<null>], response[status=0, contentType=<null>, body=<null>]"));
+        final LoggedRequest request = new LoggedRequest();
+        final LoggedResponse response = new LoggedResponse();
+
+        LoggedExchange exchange = new LoggedExchange(request, response);
+
+        assertThat(exchange.toString(), containsString(request.toString()));
+        assertThat(exchange.toString(), containsString(response.toString()));
     }
 }
