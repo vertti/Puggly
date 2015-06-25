@@ -16,7 +16,7 @@ public class LoggedResponseTest {
         loggedResponse.contentType = "foo/bar";
         loggedResponse.status = 200;
 
-        assertThat(loggedResponse.toString(), is("[status=200, contentType=foo/bar, body=body]"));
+        assertThat(loggedResponse.toString(), is("[status=200\n> contentType=foo/bar\n> body=body]"));
     }
 
     @Test

@@ -19,8 +19,8 @@ public class LoggedResponse extends PugglyValue {
     @Override
     public String toString() {
         return "[status=" + status +
-                ", contentType=" + (contentType == null ? "<null>" : contentType) +
-                ", body=" + (body == null ? "<null>" : body)
+                "\n> contentType=" + (contentType == null ? "<null>" : contentType) +
+                "\n> body=" + (body == null ? "<null>" : body)
                 + "]";
     }
 }
