@@ -6,6 +6,7 @@ import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import static java.util.Collections.list;
 import static java.util.stream.Collectors.toMap;
@@ -41,9 +42,17 @@ public class LoggedRequest extends PugglyValue {
         return new HashMap<>();
     }
 
+    private String headerString() {
+        return headers.entrySet().stream().map(e ->
+                "> " + e.getKey() + ": " +
+                        e.getValue().stream().collect(Collectors.joining(", ")))
+                .collect(Collectors.joining("\n"));
+    }
+
     @Override
     public String toString() {
         return "[" + method + " " + (uri == null ? "<null>" : uri) +
+                (headers.isEmpty() ? "" : "\n" + headerString()) +
                 "\n> contentType=" + (contentType == null ? "<null>" : contentType) +
                 "\n> sessionId=" + (sessionId == null ? "<null>" : sessionId) +
                 "\n> body=" + (body == null ? "<null>" : body) +

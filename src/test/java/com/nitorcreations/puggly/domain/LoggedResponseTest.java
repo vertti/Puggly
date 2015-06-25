@@ -21,7 +21,9 @@ public class LoggedResponseTest {
 
     @Test
     public void equalsContract() {
-        EqualsVerifier.forClass(LoggedExchange.class).withRedefinedSuperclass().suppress(Warning.STRICT_INHERITANCE).suppress(Warning.NONFINAL_FIELDS).verify();
+        EqualsVerifier.forClass(LoggedExchange.class).withRedefinedSuperclass()
+                .suppress(Warning.STRICT_INHERITANCE)
+                .suppress(Warning.NONFINAL_FIELDS).verify();
     }
 
 

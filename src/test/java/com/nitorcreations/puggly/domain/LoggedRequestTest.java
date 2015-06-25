@@ -8,6 +8,8 @@ import org.springframework.mock.web.MockHttpSession;
 
 import javax.servlet.http.HttpServletRequest;
 
+import java.util.Collections;
+
 import static org.hamcrest.CoreMatchers.hasItem;
 import static org.hamcrest.CoreMatchers.hasItems;
 import static org.hamcrest.CoreMatchers.is;
@@ -86,6 +88,16 @@ public class LoggedRequestTest {
         loggedRequest.body = "body";
 
         assertThat(loggedRequest.toString(), is("[GET http://foobar.com\n> contentType=text/html\n> sessionId=123\n> body=body]"));
+    }
+
+    @Test
+    public void to_string_with_header() {
+        LoggedRequest loggedRequest = new LoggedRequest();
+        loggedRequest.method = "POST";
+        loggedRequest.uri = "http://foobar.com";
+        loggedRequest.contentType = "text/html";
+        loggedRequest.headers = Collections.singletonMap("header1", Collections.singletonList("headerValue1"));
+        assertThat(loggedRequest.toString(), is("[POST http://foobar.com\n> header1: headerValue1\n> contentType=text/html\n> sessionId=<null>\n> body=<null>]"));
     }
 
     @Test
