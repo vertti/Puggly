@@ -46,6 +46,15 @@ public class LoggedRequestTest {
     }
 
     @Test
+    public void method_from_httpservletrequest() {
+        MockHttpServletRequest servletRequest = new MockHttpServletRequest();
+        servletRequest.setMethod("POST");
+        LoggedRequest loggedRequest = new LoggedRequest(servletRequest, null);
+
+        assertThat(loggedRequest.method, is("POST"));
+    }
+
+    @Test
     public void contentType_from_httpservletrequest() {
         MockHttpServletRequest servletRequest = new MockHttpServletRequest();
         servletRequest.setContentType("foo/bar");
@@ -67,21 +76,23 @@ public class LoggedRequestTest {
     @Test
     public void to_string() {
         LoggedRequest loggedRequest = new LoggedRequest();
+        loggedRequest.method = "GET";
         loggedRequest.uri = "http://foobar.com";
         loggedRequest.contentType = "text/html";
         loggedRequest.sessionId = "123";
         loggedRequest.body = "body";
 
-        assertThat(loggedRequest.toString(), is("[uri=http://foobar.com, contentType=text/html, sessionId=123, body=body]"));
+        assertThat(loggedRequest.toString(), is("[GET http://foobar.com\n> contentType=text/html\n> sessionId=123\n> body=body]"));
     }
 
     @Test
     public void to_string_with_nulls() {
         LoggedRequest loggedRequest = new LoggedRequest();
+        loggedRequest.method = "POST";
         loggedRequest.uri = "http://foobar.com";
         loggedRequest.contentType = "text/html";
 
-        assertThat(loggedRequest.toString(), is("[uri=http://foobar.com, contentType=text/html, sessionId=<null>, body=<null>]"));
+        assertThat(loggedRequest.toString(), is("[POST http://foobar.com\n> contentType=text/html\n> sessionId=<null>\n> body=<null>]"));
     }
 
     @Test

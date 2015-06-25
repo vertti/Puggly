@@ -4,6 +4,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 public class LoggedRequest extends PugglyValue {
+    public String method;
     public String uri;
     public String body;
     public String contentType;
@@ -15,6 +16,7 @@ public class LoggedRequest extends PugglyValue {
     public LoggedRequest(HttpServletRequest request, String body) {
         this.body = body;
         contentType = request.getContentType();
+        this.method = request.getMethod();
         HttpSession session = request.getSession(false);
         if (session != null) {
             sessionId = session.getId();
@@ -24,10 +26,10 @@ public class LoggedRequest extends PugglyValue {
 
     @Override
     public String toString() {
-        return "[uri=" + (uri == null ? "<null>" : uri) +
-                ", contentType=" + (contentType == null ? "<null>" : contentType) +
-                ", sessionId=" + (sessionId == null ? "<null>" : sessionId) +
-                ", body=" + (body == null ? "<null>" : body) +
+        return "[" + method + " " + (uri == null ? "<null>" : uri) +
+                "\n> contentType=" + (contentType == null ? "<null>" : contentType) +
+                "\n> sessionId=" + (sessionId == null ? "<null>" : sessionId) +
+                "\n> body=" + (body == null ? "<null>" : body) +
                 "]";
     }
 }
