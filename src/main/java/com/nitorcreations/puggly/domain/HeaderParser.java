@@ -1,10 +1,8 @@
 package com.nitorcreations.puggly.domain;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.Enumeration;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import javax.servlet.http.HttpServletResponse;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import static java.util.Collections.list;
@@ -20,11 +18,18 @@ class HeaderParser {
         return new HashMap<>();
     }
 
+    public static Map<String, List<String>> getHeaders(HttpServletResponse response) {
+        final Collection<String> headerNames = response.getHeaderNames();
+        if (headerNames != null) {
+            return response.getHeaderNames().stream().collect(toMap(m -> m, m -> new ArrayList<>(response.getHeaders(m))));
+        }
+        return new HashMap<>();
+    }
+
     public static String headerString(Map<String, List<String>> headers) {
         return headers.entrySet().stream().map(e ->
                 "> " + e.getKey() + ": " +
                         e.getValue().stream().collect(Collectors.joining(", ")))
                 .collect(Collectors.joining("\n"));
     }
-
 }
