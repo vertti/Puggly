@@ -8,8 +8,11 @@ import org.springframework.mock.web.MockHttpSession;
 
 import javax.servlet.http.HttpServletRequest;
 
+import static org.hamcrest.CoreMatchers.hasItem;
+import static org.hamcrest.CoreMatchers.hasItems;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
+import static org.mockito.Matchers.contains;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -93,6 +96,25 @@ public class LoggedRequestTest {
         loggedRequest.contentType = "text/html";
 
         assertThat(loggedRequest.toString(), is("[POST http://foobar.com\n> contentType=text/html\n> sessionId=<null>\n> body=<null>]"));
+    }
+
+    @Test
+    public void simple_header() {
+        MockHttpServletRequest servletRequest = new MockHttpServletRequest();
+        servletRequest.addHeader("foo", "bar");
+        LoggedRequest loggedRequest = new LoggedRequest(servletRequest, "body content");
+
+        assertThat(loggedRequest.headers.get("foo"), hasItem("bar"));
+    }
+
+    @Test
+    public void multi_value_header() {
+        MockHttpServletRequest servletRequest = new MockHttpServletRequest();
+        servletRequest.addHeader("foo", "bar");
+        servletRequest.addHeader("foo", "baz");
+        LoggedRequest loggedRequest = new LoggedRequest(servletRequest, "body content");
+
+        assertThat(loggedRequest.headers.get("foo"), hasItems("bar", "baz"));
     }
 
     @Test
