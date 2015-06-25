@@ -12,9 +12,10 @@ public class LoggedRequest extends PugglyValue {
     public String body;
     public String contentType;
     public String sessionId;
-    public Map<String, List<String>> headers = new HashMap<>();
+    public Map<String, List<String>> headers;
 
     public LoggedRequest() {
+        headers = new HashMap<>();
     }
 
     public LoggedRequest(HttpServletRequest request, String body) {
