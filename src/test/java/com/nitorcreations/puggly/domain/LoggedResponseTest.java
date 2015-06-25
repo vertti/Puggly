@@ -4,6 +4,8 @@ import nl.jqno.equalsverifier.EqualsVerifier;
 import nl.jqno.equalsverifier.Warning;
 import org.junit.Test;
 
+import static java.util.Collections.singletonList;
+import static java.util.Collections.singletonMap;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
@@ -17,6 +19,17 @@ public class LoggedResponseTest {
         loggedResponse.status = 200;
 
         assertThat(loggedResponse.toString(), is("[status=200\n> contentType=foo/bar\n> body=body]"));
+    }
+
+    @Test
+    public void to_string_with_headers() {
+        LoggedResponse loggedResponse = new LoggedResponse();
+        loggedResponse.body = "body";
+        loggedResponse.contentType = "foo/bar";
+        loggedResponse.status = 200;
+        loggedResponse.headers = singletonMap("header1", singletonList("headerValue1"));
+
+        assertThat(loggedResponse.toString(), is("[status=200\n> header1: headerValue1\n> contentType=foo/bar\n> body=body]"));
     }
 
     @Test
