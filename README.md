@@ -1,6 +1,6 @@
 # Puggly - Java-configured Logging ServletFilter
 [![Build Status](https://travis-ci.org/NitorCreations/Puggly.svg?branch=master)](https://travis-ci.org/NitorCreations/Puggly)
-[![Coverage Status](https://coveralls.io/repos/NitorCreations/DomainReverseMapper/badge.svg?branch=master)](https://coveralls.io/r/NitorCreations/DomainReverseMapper?branch=master)
+[![Coverage Status](https://coveralls.io/repos/NitorCreations/Puggly/badge.svg?branch=master)](https://coveralls.io/r/NitorCreations/Puggly?branch=master)
 
 Easy to configure logging filter for servlet containers. Just create an instance of `LoggingFilter`, configure which messages to log and how to conditionally modify the logged content and you are done. All done with few lines of pure Java.
 
