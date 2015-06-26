@@ -30,3 +30,31 @@ When you have your `LoggingFilter` configured the way you want it, just introduc
         return filter;
     }
 
+### Example of logged message
+
+```
+Request (3): [GET /secure/user/account?sourceRequestId=1336408566f711
+> host: localhost:8443
+> authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1Ni..
+> accept: application/json
+> connection: close
+> body=],
+Response (3): [status=200
+> Access-Control-Allow-Origin: *
+> Access-Control-Allow-Methods: POST, GET, OPTIONS, DELETE
+> Access-Control-Max-Age: 3600
+> Access-Control-Allow-Headers: x-requested-with, Authorization
+> Cache-Control: no-store, no-cache, must-revalidate, max-age=0
+> X-Application-Context: application:local:8443
+> contentType=application/json;charset=UTF-8
+> body={
+  "firstName": "John",
+  "lastName": "Doe",
+  "accountId": "ce36247641704aac94.....",
+  "username": "john.doe@foobar.com",
+  "serviceProfile": {
+    "accountId": "2545345345ce36247641",
+    "thirdPartyId": "52345343663"
+  }
+}]
+```
