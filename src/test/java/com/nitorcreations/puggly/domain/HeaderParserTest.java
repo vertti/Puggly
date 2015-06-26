@@ -1,15 +1,11 @@
 package com.nitorcreations.puggly.domain;
 
 import org.junit.Test;
+import org.springframework.http.HttpHeaders;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpServletResponse;
 
-import java.util.List;
-import java.util.Map;
-
-import static org.hamcrest.CoreMatchers.hasItem;
-import static org.hamcrest.CoreMatchers.hasItems;
-import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.*;
 import static org.junit.Assert.assertThat;
 
 public class HeaderParserTest {
@@ -53,7 +49,7 @@ public class HeaderParserTest {
         MockHttpServletRequest servletRequest = new MockHttpServletRequest();
         servletRequest.addHeader("foo", "bar");
         servletRequest.addHeader("foo", "baz");
-        final Map<String, List<String>> headers = HeaderParser.getHeaders(servletRequest);
+        HttpHeaders headers = HeaderParser.getHeaders(servletRequest);
         assertThat(HeaderParser.headerString(headers), is("> foo: bar, baz"));
     }
 

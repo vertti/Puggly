@@ -1,32 +1,39 @@
 package com.nitorcreations.puggly.domain;
 
+import org.springframework.http.HttpHeaders;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.*;
 import java.util.stream.Collectors;
 
 import static java.util.Collections.list;
-import static java.util.stream.Collectors.toMap;
 
 class HeaderParser {
 
-    public static Map<String, List<String>> getHeaders(HttpServletRequest request) {
+    public static HttpHeaders getHeaders(HttpServletRequest request) {
+        HttpHeaders headers = new HttpHeaders();
         final Enumeration<String> headerNames = request.getHeaderNames();
         if (headerNames != null) {
-            return list(request.getHeaderNames()).stream().collect(toMap(m -> m, m -> list(request.getHeaders(m))));
+            for (String headerName : Collections.list(headerNames)) {
+                list(request.getHeaders(headerName)).stream().forEach(v -> headers.add(headerName, v));
+            }
         }
-        return new HashMap<>();
+        return headers;
     }
 
-    public static Map<String, List<String>> getHeaders(HttpServletResponse response) {
+    public static HttpHeaders getHeaders(HttpServletResponse response) {
+        HttpHeaders headers = new HttpHeaders();
         final Collection<String> headerNames = response.getHeaderNames();
         if (headerNames != null) {
-            return response.getHeaderNames().stream().collect(toMap(m -> m, m -> new ArrayList<>(response.getHeaders(m))));
+            for (String headerName : headerNames) {
+                response.getHeaders(headerName).stream().forEach(v -> headers.add(headerName, v));
+            }
         }
-        return new HashMap<>();
+        return headers;
     }
 
-    public static String headerString(Map<String, List<String>> headers) {
+    public static String headerString(HttpHeaders headers) {
         return headers.entrySet().stream().map(e ->
                 "> " + e.getKey() + ": " +
                         e.getValue().stream().collect(Collectors.joining(", ")))

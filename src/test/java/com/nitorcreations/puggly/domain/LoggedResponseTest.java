@@ -3,6 +3,7 @@ package com.nitorcreations.puggly.domain;
 import nl.jqno.equalsverifier.EqualsVerifier;
 import nl.jqno.equalsverifier.Warning;
 import org.junit.Test;
+import org.springframework.http.HttpHeaders;
 
 import static java.util.Collections.singletonList;
 import static java.util.Collections.singletonMap;
@@ -27,7 +28,7 @@ public class LoggedResponseTest {
         loggedResponse.body = "body";
         loggedResponse.contentType = "foo/bar";
         loggedResponse.status = 200;
-        loggedResponse.headers = singletonMap("header1", singletonList("headerValue1"));
+        loggedResponse.headers.add("header1", "headerValue1");
 
         assertThat(loggedResponse.toString(), is("[status=200\n> header1: headerValue1\n> contentType=foo/bar\n> body=body]"));
     }

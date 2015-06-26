@@ -1,5 +1,7 @@
 package com.nitorcreations.puggly.domain;
 
+import org.springframework.http.HttpHeaders;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.HashMap;
@@ -12,10 +14,10 @@ public class LoggedRequest extends PugglyValue {
     public String body;
     public String contentType;
     public String sessionId;
-    public Map<String, List<String>> headers;
+    public HttpHeaders headers;
 
     public LoggedRequest() {
-        headers = new HashMap<>();
+        headers = new HttpHeaders();
     }
 
     public LoggedRequest(HttpServletRequest request, String body) {

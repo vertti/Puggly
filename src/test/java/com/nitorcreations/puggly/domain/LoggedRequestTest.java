@@ -3,6 +3,7 @@ package com.nitorcreations.puggly.domain;
 import nl.jqno.equalsverifier.EqualsVerifier;
 import nl.jqno.equalsverifier.Warning;
 import org.junit.Test;
+import org.springframework.http.HttpHeaders;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpSession;
 
@@ -94,7 +95,7 @@ public class LoggedRequestTest {
         loggedRequest.method = "POST";
         loggedRequest.uri = "http://foobar.com";
         loggedRequest.contentType = "text/html";
-        loggedRequest.headers = singletonMap("header1", singletonList("headerValue1"));
+        loggedRequest.headers.add("header1", "headerValue1");
         assertThat(loggedRequest.toString(), is("[POST http://foobar.com\n> header1: headerValue1\n> contentType=text/html\n> sessionId=<null>\n> body=<null>]"));
     }
 

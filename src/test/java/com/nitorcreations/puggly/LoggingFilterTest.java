@@ -27,6 +27,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.hamcrest.CoreMatchers.hasItems;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Matchers.any;
@@ -89,6 +90,21 @@ public class LoggingFilterTest {
 
         verify(logger, timeout(1000).times(1)).debug(eq("{}"), any(LoggedExchange.class));
     }
+
+    @Test
+    public void testPut_multivalue_headers() throws IOException {
+        HttpPut httpPut = new HttpPut("http://localhost:8080/foobar");
+        httpPut.addHeader("Cookie", "foobar");
+        httpPut.addHeader("Cookie", "bazfuu");
+
+        httpclient.execute(httpPut);
+
+        ArgumentCaptor<LoggedExchange> captor = ArgumentCaptor.forClass(LoggedExchange.class);
+        verify(logger, timeout(1000).times(1)).debug(eq("{}"), captor.capture());
+
+        assertThat(captor.getValue().request.headers.get("Cookie"), hasItems("foobar", "bazfuu"));
+    }
+
 
     @Test
     public void testSkipping() throws IOException {

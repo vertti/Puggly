@@ -1,18 +1,17 @@
 package com.nitorcreations.puggly.domain;
 
+import org.springframework.http.HttpHeaders;
+
 import javax.servlet.http.HttpServletResponse;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 public class LoggedResponse extends PugglyValue {
-    public Map<String, List<String>> headers;
+    public HttpHeaders headers;
     public int status;
     public String contentType;
     public String body;
 
     public LoggedResponse() {
-        headers = new HashMap<>();
+        headers = new HttpHeaders();
     }
 
     public LoggedResponse(HttpServletResponse response, String body) {
